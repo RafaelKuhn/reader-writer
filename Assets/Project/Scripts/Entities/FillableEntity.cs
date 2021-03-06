@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 public class FillableEntity : MonoBehaviour
 {
-    public Image white;
-    public Image green;
+    [SerializeField] private Image white;
+    [SerializeField] private Image green;
+
+    private bool isPaused;
 
     protected void Fill(float amount)
     {
@@ -27,10 +29,23 @@ public class FillableEntity : MonoBehaviour
 
             Fill( unitaryValue );
 
-            //print( $"dividing -> {i} by {iterations}" );
-            //print( $"val -> {unitaryValue}" );
+            while (isPaused)
+            {
+                yield return null;
+            }
 
             yield return new WaitForSeconds( waitTimePerIteration );
         }
     }
+
+    public void Pause()
+    {
+        isPaused = true;
+    }
+
+    public void Resume()
+    {
+        isPaused = false;
+    }
+
 }

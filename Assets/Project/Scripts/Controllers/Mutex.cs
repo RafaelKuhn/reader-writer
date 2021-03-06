@@ -56,6 +56,11 @@ public class Mutex : MonoBehaviour
         }
     }
 
+    public void ShouldNotRead()
+    {
+        canReadLight.ToggleYellowLight();
+    }
+
     
 
     public static Mutex instance;

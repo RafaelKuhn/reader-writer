@@ -9,7 +9,7 @@ public class Writer : FillableEntity
     {
         mutex = Mutex.instance;
 
-        Write();
+        StartCoroutine( Write() );
     }
 
     void OnDestroy()
@@ -17,13 +17,7 @@ public class Writer : FillableEntity
         EntitySpawner.instance.DespawnWriter( gameObject );
     }
 
-    public void Write()
-    {
-        StartCoroutine( WriteCor() );
-    }
-
-
-    private IEnumerator WriteCor()
+    private IEnumerator Write()
     {
         // begin write
         if (mutex.activeWriters == 1 || mutex.activeReaders > 0)
@@ -34,24 +28,25 @@ public class Writer : FillableEntity
             {
                 yield return null;
             }
+            mutex.waitingWriters--;
         }
 
 
-        // actually writes / fills bar
         mutex.CanRead = false;
         mutex.CanWrite = false;
 
-        mutex.waitingWriters--;
         mutex.activeWriters = 1;
-        yield return StartCoroutine( FillProgressively( Random.Range( 0.5f, 1.5f ) ) );
 
+        // actually writes / fills bar
+        yield return StartCoroutine( FillProgressively( Random.Range( 0.5f, 1.5f ) ) );
 
         // end writing
         mutex.activeWriters = 0;
 
-        if (mutex.waitingReaders > 0)
+        if (mutex.waitingWriters == 0)
         {
             mutex.CanRead = true;
+            mutex.CanWrite = true;
         }
 
         Destroy( gameObject );

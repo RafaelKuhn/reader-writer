@@ -9,7 +9,7 @@ public class Reader : FillableEntity
     {
         mutex = Mutex.instance;
 
-        Read();
+        StartCoroutine( Read() );
     }
 
     void OnDestroy()
@@ -17,33 +17,47 @@ public class Reader : FillableEntity
         EntitySpawner.instance.DespawnReader( gameObject );
     }
 
-    public void Read()
-    {
-        StartCoroutine( ReadCor() );
-    }
-
-    private IEnumerator ReadCor()
+    private IEnumerator Read()
     {
         // begin read
 
-        if (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
+        if (mutex.isStarvationEnabled)
         {
-            mutex.waitingReaders++;
-
-            while (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
+            if (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
             {
-                yield return null;
+                mutex.waitingReaders++;
+
+                while (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
+                {
+                    yield return null;
+                }
+
+                mutex.waitingReaders--;
             }
-            
-            mutex.waitingReaders--;
         }
 
-        // actually reads
+        else
+        {
+            if (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
+            {
+                mutex.waitingReaders++;
+
+                while (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
+                {
+                    yield return null;
+                }
+
+                mutex.waitingReaders--;
+            }
+        }
+
+
         mutex.CanWrite = false;
         mutex.CanRead = true;
         
         mutex.activeReaders++;
 
+        // actually reads
         yield return StartCoroutine( FillProgressively( Random.Range( 1f, 3f ) ) );
 
         // end reading
