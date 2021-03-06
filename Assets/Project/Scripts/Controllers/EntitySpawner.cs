@@ -13,6 +13,9 @@ public class EntitySpawner : MonoBehaviour
 
     public static EntitySpawner instance;
 
+    private List<GameObject> spawnedReaders = new List<GameObject>();
+    private List<GameObject> spawnedwriters = new List<GameObject>();
+
     void Awake()
     {
         instance = this;
@@ -23,15 +26,35 @@ public class EntitySpawner : MonoBehaviour
         
     }
 
+    public void _PauseButtonClicked()
+    {
+
+    }
+
     public void _SpawnReader()
     {
-        Instantiate( readerPrefab, readers.transform );
+        if (spawnedReaders.Count >= 7) { return; }
+
+        var obj = Instantiate( readerPrefab, readers.transform );
+        spawnedReaders.Add( obj );
     }
 
     public void _SpawnWriter()
     {
-        Instantiate( writerPrefab, writers.transform );
+        if (spawnedwriters.Count >= 7) { return; }
+
+        var obj = Instantiate( writerPrefab, writers.transform );
+        spawnedwriters.Add( obj );
     }
 
+    public void DespawnReader(GameObject obj)
+    {
+        spawnedReaders.Remove( obj );
+    }
+
+    public void DespawnWriter( GameObject obj )
+    {
+        spawnedwriters.Remove( obj );
+    }
 
 }

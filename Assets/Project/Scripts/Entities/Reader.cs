@@ -12,6 +12,11 @@ public class Reader : FillableEntity
         Read();
     }
 
+    void OnDestroy()
+    {
+        EntitySpawner.instance.DespawnReader( gameObject );
+    }
+
     public void Read()
     {
         StartCoroutine( ReadCor() );
@@ -20,42 +25,34 @@ public class Reader : FillableEntity
     private IEnumerator ReadCor()
     {
         // begin read
-        if (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
+
+        if (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
         {
             mutex.waitingReaders++;
 
-            print( $"{gameObject.name} is waiting" );
-
-            while (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
+            while (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
             {
                 yield return null;
             }
+            
+            mutex.waitingReaders--;
         }
-
-        print( $"{gameObject.name} is reading" );
 
         // actually reads
         mutex.CanWrite = false;
         mutex.CanRead = true;
-
-        mutex.waitingReaders--;
+        
         mutex.activeReaders++;
 
-        yield return StartCoroutine( FillProgressively( Random.Range( 0.3f, 3f ) ) );
+        yield return StartCoroutine( FillProgressively( Random.Range( 1f, 3f ) ) );
 
         // end reading
         mutex.activeReaders--;
-        if (mutex.waitingWriters > 0 && mutex.activeReaders == 0)
-        {
-            mutex.CanWrite = true;
-        }
         
-        if (mutex.waitingWriters == 0 && mutex.waitingReaders == 0)
+        if (mutex.activeReaders == 0)
         {
             mutex.CanWrite = true;
-            mutex.CanRead = true;
         }
-
 
         Destroy( gameObject );
     }

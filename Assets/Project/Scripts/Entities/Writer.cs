@@ -12,6 +12,11 @@ public class Writer : FillableEntity
         Write();
     }
 
+    void OnDestroy()
+    {
+        EntitySpawner.instance.DespawnWriter( gameObject );
+    }
+
     public void Write()
     {
         StartCoroutine( WriteCor() );
@@ -25,15 +30,12 @@ public class Writer : FillableEntity
         {
             mutex.waitingWriters++;
 
-            print( $"{gameObject.name} is waiting" );
-
             while (mutex.activeWriters == 1 || mutex.activeReaders > 0)
             {
                 yield return null;
             }
         }
 
-        print( $"{gameObject.name} is writing" );
 
         // actually writes / fills bar
         mutex.CanRead = false;
@@ -41,7 +43,7 @@ public class Writer : FillableEntity
 
         mutex.waitingWriters--;
         mutex.activeWriters = 1;
-        yield return StartCoroutine( FillProgressively( Random.Range( 0.3f, 3f ) ) );
+        yield return StartCoroutine( FillProgressively( Random.Range( 0.5f, 1.5f ) ) );
 
 
         // end writing

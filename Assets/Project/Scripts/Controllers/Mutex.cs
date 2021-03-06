@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Mutex : MonoBehaviour
 {
@@ -9,6 +10,13 @@ public class Mutex : MonoBehaviour
 
     private bool canRead;
     private bool canWrite;
+
+    public bool isStarvationEnabled = true;
+
+    [HideInInspector] public int activeReaders;
+    [HideInInspector] public int activeWriters;
+    [HideInInspector] public int waitingReaders;
+    [HideInInspector] public int waitingWriters;
 
     [HideInInspector]
     public bool CanRead
@@ -37,7 +45,7 @@ public class Mutex : MonoBehaviour
             canWrite = value;
 
             if (canWrite)
-            {
+            {   
                 canWriteLight.ToggleGreenLight();
             }
 
@@ -48,11 +56,7 @@ public class Mutex : MonoBehaviour
         }
     }
 
-    [HideInInspector] public int activeReaders;
-    [HideInInspector] public int activeWriters;
-
-    [HideInInspector] public int waitingReaders;
-    [HideInInspector] public int waitingWriters;
+    
 
     public static Mutex instance;
     void Awake()
@@ -64,6 +68,11 @@ public class Mutex : MonoBehaviour
     {
         CanRead = true;
         CanWrite = true;
+    }
+    
+    public void _ToggleStarvation(Toggle toggle)
+    {
+        isStarvationEnabled = toggle.isOn;
     }
 
 }
