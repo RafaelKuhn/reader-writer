@@ -7,8 +7,8 @@ public class Mutex : MonoBehaviour
     [SerializeField] private TrafficLight canReadLight;
     [SerializeField] private TrafficLight canWriteLight;
 
-    private bool canRead = true;
-    private bool canWrite = false;
+    private bool canRead;
+    private bool canWrite;
 
     [HideInInspector]
     public bool CanRead
@@ -38,12 +38,12 @@ public class Mutex : MonoBehaviour
 
             if (canWrite)
             {
-                canReadLight.ToggleGreenLight();
+                canWriteLight.ToggleGreenLight();
             }
 
             else
             {
-                canReadLight.ToggleRedLight();
+                canWriteLight.ToggleRedLight();
             }
         }
     }
@@ -58,6 +58,12 @@ public class Mutex : MonoBehaviour
     void Awake()
     {
         instance = this;
+    }
+
+    void Start()
+    {
+        CanRead = true;
+        CanWrite = true;
     }
 
 }

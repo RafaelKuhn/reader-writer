@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class EntitySpawner : MonoBehaviour
 {
+    public GameObject readerPrefab;
+    public GameObject writerPrefab;
+
     public HorizontalOrVerticalLayoutGroup readers;
     public HorizontalOrVerticalLayoutGroup writers;
-
-    private Queue<Reader> readerQueue = new Queue<Reader>();
-    private Queue<Writer> writerQueue = new Queue<Writer>();
 
     public static EntitySpawner instance;
 
@@ -23,7 +23,15 @@ public class EntitySpawner : MonoBehaviour
         
     }
 
+    public void _SpawnReader()
+    {
+        Instantiate( readerPrefab, readers.transform );
+    }
 
+    public void _SpawnWriter()
+    {
+        Instantiate( writerPrefab, writers.transform );
+    }
 
 
 }

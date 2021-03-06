@@ -29,10 +29,4 @@ public class TrafficLight : MonoBehaviour
 
         yellowLight.gameObject.SetActive( true );
     }
-
-    void Start()
-    {
-        ToggleRedLight();
-    }
-
 }

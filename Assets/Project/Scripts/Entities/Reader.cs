@@ -49,6 +49,12 @@ public class Reader : FillableEntity
         {
             mutex.CanWrite = true;
         }
+        
+        if (mutex.waitingWriters == 0 && mutex.waitingReaders == 0)
+        {
+            mutex.CanWrite = true;
+            mutex.CanRead = true;
+        }
 
 
         Destroy( gameObject );
