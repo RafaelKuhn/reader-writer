@@ -6,40 +6,33 @@ public class TrafficLight : MonoBehaviour
     [SerializeField] private SpriteRenderer yellowLight;
     [SerializeField] private SpriteRenderer greenLight;
 
-    private bool isAllowed;
-    public bool IsAllowed
+    public void ToggleRedLight()
     {
-        get { return isAllowed; }
-        set
-        {
-            isAllowed = value;
+        yellowLight.gameObject.SetActive( false );
+        redLight.gameObject.SetActive( true );
 
-            yellowLight.gameObject.SetActive( false );
-
-            if (isAllowed)
-            {
-                greenLight.gameObject.SetActive( true );
-                redLight.gameObject.SetActive( false );
-            }
-
-            else
-            {
-                greenLight.gameObject.SetActive( false );
-                redLight.gameObject.SetActive( true );
-            }
-        }
+        greenLight.gameObject.SetActive( false );
     }
 
-    public void ResetToYellow()
+    public void ToggleGreenLight()
     {
-        yellowLight.gameObject.SetActive( true );
+        yellowLight.gameObject.SetActive( false );
+        redLight.gameObject.SetActive( false );
+
+        greenLight.gameObject.SetActive( true );
+    }
+
+    public void ToggleYellowLight()
+    {
         redLight.gameObject.SetActive( false );
         greenLight.gameObject.SetActive( false );
+
+        yellowLight.gameObject.SetActive( true );
     }
 
     void Start()
     {
-        ResetToYellow();
+        ToggleRedLight();
     }
 
 }
