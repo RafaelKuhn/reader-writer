@@ -23,11 +23,11 @@ public class Reader : FillableEntity
 
         if (mutex.isStarvationEnabled)
         {
-            if (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
+            if (mutex.activeWriters == 1)
             {
                 mutex.waitingReaders++;
 
-                while (mutex.activeWriters == 1) // || mutex.waitingWriters > 0
+                while (mutex.activeWriters == 1)
                 {
                     yield return null;
                 }
@@ -40,7 +40,12 @@ public class Reader : FillableEntity
         {
             if (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
             {
+                int writersWaitingRightNow = mutex.waitingWriters;
+                print( $"there were {writersWaitingRightNow} writers waiting" );
+
                 mutex.waitingReaders++;
+
+                mutex.ShouldNotRead();
 
                 while (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
                 {
@@ -58,7 +63,7 @@ public class Reader : FillableEntity
         mutex.activeReaders++;
 
         // actually reads
-        yield return StartCoroutine( FillProgressively( Random.Range( 1f, 3f ) ) );
+        yield return StartCoroutine( FillProgressively( Random.Range( 2f, 4f ) ) );
 
         // end reading
         mutex.activeReaders--;

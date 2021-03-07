@@ -25,14 +25,14 @@ public class FillableEntity : MonoBehaviour
         iterations = Mathf.Round( iterations );
         for (float i = 0; i <= iterations; i++)
         {
-            float unitaryValue = i / iterations;
-
-            Fill( unitaryValue );
-
             while (isPaused)
             {
                 yield return null;
             }
+
+            float unitaryValue = i / iterations;
+
+            Fill( unitaryValue );
 
             yield return new WaitForSeconds( waitTimePerIteration );
         }

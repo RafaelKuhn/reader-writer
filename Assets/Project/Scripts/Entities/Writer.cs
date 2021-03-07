@@ -38,7 +38,7 @@ public class Writer : FillableEntity
         mutex.activeWriters = 1;
 
         // actually writes / fills bar
-        yield return StartCoroutine( FillProgressively( Random.Range( 0.5f, 1.5f ) ) );
+        yield return StartCoroutine( FillProgressively( Random.Range( 1f, 2f ) ) );
 
         // end writing
         mutex.activeWriters = 0;
