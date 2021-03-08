@@ -40,12 +40,12 @@ public class Reader : FillableEntity
         {
             if (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
             {
-                int writersWaitingRightNow = mutex.waitingWriters;
-                print( $"there were {writersWaitingRightNow} writers waiting" );
-
                 mutex.waitingReaders++;
 
-                mutex.ShouldNotRead();
+                if (mutex.waitingWriters > 0)
+                {
+                    mutex.ShouldNotRead();
+                }
 
                 while (mutex.activeWriters == 1 || mutex.waitingWriters > 0)
                 {
