@@ -9,7 +9,7 @@ public class FillableEntity : MonoBehaviour
 
     private bool isPaused;
 
-    protected void Fill(float amount)
+    private void Fill(float amount)
     {
         float normalizedAmount = Mathf.Clamp(amount, 0, 1);
 
@@ -17,7 +17,7 @@ public class FillableEntity : MonoBehaviour
         white.fillAmount = 1 - normalizedAmount;
     }
 
-    public IEnumerator FillProgressively( float durationInSeconds, float callsPerSecond = 60 )
+    protected IEnumerator FillProgressively( float durationInSeconds, float callsPerSecond = 60 )
     {
         float iterations = durationInSeconds * callsPerSecond;
         float waitTimePerIteration = durationInSeconds / iterations;
