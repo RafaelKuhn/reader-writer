@@ -31,8 +31,8 @@ public class Writer : FillableEntity
         }
 
 
-        mutex.CanRead = false;
-        mutex.CanWrite = false;
+        mutex.CanReadSemaphor = false;
+        mutex.CanWriteSemaphor = false;
 
         mutex.activeWriters = 1;
 
@@ -44,8 +44,8 @@ public class Writer : FillableEntity
 
         if (mutex.waitingWriters == 0)
         {
-            mutex.CanRead = true;
-            mutex.CanWrite = true;
+            mutex.CanReadSemaphor = true;
+            mutex.CanWriteSemaphor = true;
         }
 
         Destroy( gameObject );

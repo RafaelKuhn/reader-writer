@@ -56,8 +56,8 @@ public class Reader : FillableEntity
         }
 
 
-        mutex.CanWrite = false;
-        mutex.CanRead = true;
+        mutex.CanWriteSemaphor = false;
+        mutex.CanReadSemaphor = true;
         
         mutex.activeReaders++;
 
@@ -69,7 +69,7 @@ public class Reader : FillableEntity
         
         if (mutex.activeReaders == 0)
         {
-            mutex.CanWrite = true;
+            mutex.CanWriteSemaphor = true;
         }
 
         Destroy( gameObject );

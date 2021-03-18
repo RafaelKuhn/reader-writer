@@ -18,7 +18,7 @@ public class Mutex : MonoBehaviour
     [HideInInspector] public int waitingWriters;
 
     [HideInInspector]
-    public bool CanRead
+    public bool CanReadSemaphor
     {
         get { return canRead; }
         set
@@ -36,7 +36,8 @@ public class Mutex : MonoBehaviour
             }
         }
     }
-    [HideInInspector] public bool CanWrite
+    [HideInInspector]
+    public bool CanWriteSemaphor
     {
         get { return canWrite; }
         set
@@ -70,8 +71,8 @@ public class Mutex : MonoBehaviour
 
     void Start()
     {
-        CanRead = true;
-        CanWrite = true;
+        CanReadSemaphor = true;
+        CanWriteSemaphor = true;
     }
     
     public void _ToggleStarvation(Toggle toggle)
