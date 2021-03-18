@@ -1,15 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class GamePauser : MonoBehaviour
 {
-    private EntitySpawner spawner;
-
-    void Start()
-    {
-        spawner = EntitySpawner.instance;
-    }
+    public static bool isPaused { get; private set; } = false;
 
     public void _ResumeButtonClicked()
     {
@@ -21,25 +15,13 @@ public class GamePauser : MonoBehaviour
         PauseGame();
     }
 
-
-    List<GameObject> allEntities;
     private void PauseGame()
     {
-        allEntities = new List<GameObject>();
-        
-        allEntities.AddRange( spawner.spawnedReaderObjects );
-        allEntities.AddRange( spawner.spawnedwriterObjects );
-
-        allEntities.ForEach( reader => reader.GetComponent<FillableEntity>().Pause() );
+        isPaused = true;
     }
 
     private void ResumeGame()
     {
-        allEntities.ForEach( reader => reader.GetComponent<FillableEntity>().Resume() );
-        
-        allEntities.Clear();
+        isPaused = false;
     }
-
-
-
 }

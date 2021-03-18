@@ -2,20 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class FillableEntity : MonoBehaviour
 {
     [SerializeField] private Image white;
     [SerializeField] private Image green;
-
-    private bool isPaused;
-
-    private void Fill(float amount)
-    {
-        float normalizedAmount = Mathf.Clamp(amount, 0, 1);
-
-        green.fillAmount = normalizedAmount;
-        white.fillAmount = 1 - normalizedAmount;
-    }
 
     protected IEnumerator FillProgressively( float durationInSeconds, float callsPerSecond = 60 )
     {
@@ -25,7 +16,7 @@ public class FillableEntity : MonoBehaviour
         iterations = Mathf.Round( iterations );
         for (float i = 0; i <= iterations; i++)
         {
-            while (isPaused)
+            while (GamePauser.isPaused)
             {
                 yield return null;
             }
@@ -38,14 +29,11 @@ public class FillableEntity : MonoBehaviour
         }
     }
 
-    public void Pause()
+    private void Fill( float amount )
     {
-        isPaused = true;
-    }
+        float normalizedAmount = Mathf.Clamp(amount, 0, 1);
 
-    public void Resume()
-    {
-        isPaused = false;
+        green.fillAmount = normalizedAmount;
+        white.fillAmount = 1 - normalizedAmount;
     }
-
 }

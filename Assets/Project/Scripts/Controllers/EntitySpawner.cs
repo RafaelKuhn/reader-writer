@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class EntitySpawner : MonoBehaviour
 {
     public GameObject readerPrefab;
@@ -13,8 +13,11 @@ public class EntitySpawner : MonoBehaviour
 
     public static EntitySpawner instance;
 
-    public List<GameObject> spawnedReaderObjects = new List<GameObject>();
-    public List<GameObject> spawnedwriterObjects = new List<GameObject>();
+    public List<GameObject> spawnedObjects = new List<GameObject>();
+
+    private int readersAmount;
+    private int writersAmount;
+
 
     void Awake()
     {
@@ -23,28 +26,36 @@ public class EntitySpawner : MonoBehaviour
     
     public void _SpawnReader()
     {
-        if (spawnedReaderObjects.Count >= 7) { return; }
+        if (readersAmount >= 7) { return; }
 
         var obj = Instantiate( readerPrefab, readers.transform );
-        spawnedReaderObjects.Add( obj );
+        spawnedObjects.Add( obj );
+
+        readersAmount++;
     }
 
     public void _SpawnWriter()
     {
-        if (spawnedwriterObjects.Count >= 7) { return; }
+        if (writersAmount >= 7) { return; }
 
         var obj = Instantiate( writerPrefab, writers.transform );
-        spawnedwriterObjects.Add( obj );
+        spawnedObjects.Add( obj );
+
+        writersAmount++;
     }
 
     public void DespawnReader(GameObject obj)
     {
-        spawnedReaderObjects.Remove( obj );
+        spawnedObjects.Remove( obj );
+
+        readersAmount--;
     }
 
     public void DespawnWriter( GameObject obj )
     {
-        spawnedwriterObjects.Remove( obj );
+        spawnedObjects.Remove( obj );
+
+        writersAmount--;
     }
 
 }

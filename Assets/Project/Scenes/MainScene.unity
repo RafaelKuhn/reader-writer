@@ -661,8 +661,7 @@ MonoBehaviour:
   writerPrefab: {fileID: 7119714299315703945, guid: 810c81bbad0f88c41a4994e83eeadcef, type: 3}
   readers: {fileID: 1096325662}
   writers: {fileID: 679742021}
-  spawnedReaderObjects: []
-  spawnedwriterObjects: []
+  spawnedObjects: []
 --- !u!4 &472934115
 Transform:
   m_ObjectHideFlags: 0
